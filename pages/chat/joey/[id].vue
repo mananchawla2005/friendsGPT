@@ -3,8 +3,20 @@ const route = useRoute()
 const value = ref(route.query.chat)
 const chatText = ref(null);
 const pageName = ref('Untitled')
-
+const isDisabled = ref(false)
+const hanko = useHanko()
 import contenteditable from 'vue-contenteditable';
+
+onMounted(async ()=>{
+    const {data: historyData} = await $fetch('/api/db/history', {
+        body: {
+            chat_id: route.params.id,
+            
+        },
+        method: "POST"
+    })
+    
+})
 
 function pageNameChecker(){
     if(pageName.value==""){
@@ -30,8 +42,9 @@ async function onEnter(){
         role: "user",
         message: messageValue
     })
-    value.value=""
+    value.value="Loading Response...."
     chatText.value.focus
+    isDisabled.value = true;
     const response = await $fetch("/api/joey/complete", {
         method: "POST",
         body: {
@@ -40,7 +53,8 @@ async function onEnter(){
         },
         timeout: 120000
     })
-    console.log(response)
+    value.value = ""
+    isDisabled.value = false;
     data.push(response);
 }
 
@@ -81,7 +95,7 @@ definePageMeta({
                     </div>            
                 </template>
             </div>
-            <input type="text" ref="chatText" name="chatbox" v-model="value" class=" w-[450px] lg:w-[800px] border-slate-300 shadow-lg border-2 mt-10 rounded-lg focus:outline-none text-black px-4 py-2 fixed bottom-10 transform -translate-x-1/2" autofocus="autofocus" v-on:keyup.enter="onEnter"/>
+            <input type="text" ref="chatText" v-bind:disabled="isDisabled" name="chatbox" v-model="value" class=" w-[450px] lg:w-[800px] border-slate-300 shadow-lg border-2 mt-10 rounded-lg focus:outline-none text-black px-4 py-2 fixed bottom-10 transform -translate-x-1/2" autofocus="autofocus" v-on:keyup.enter="onEnter"/>
         </div>
     </div>
 </template>

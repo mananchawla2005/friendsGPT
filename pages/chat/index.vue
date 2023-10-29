@@ -5,8 +5,16 @@ const value = ref('');
 watch(value, async (newValue, oldValue)=>{
     console.log(newValue)
     const router = useRouter()
+    const chat_id = await $fetch("/api/db/create", {
+        body: {
+            name: "Untitled",
+            agent_name: "joey"
+        },
+        method: "POST"
+    })
+    console.log(chat_id)
     router.push({
-        path: '/chat/187398934ekj3oe093933',
+        path: '/chat/joey/'+chat_id,
         query: { chat: value.value },
     })
 })
