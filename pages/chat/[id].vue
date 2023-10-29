@@ -24,14 +24,24 @@ onMounted(()=>{
     console.log("hello")
 })
 
-function onEnter(){
+async function onEnter(){
+    const messageValue = value.value
     data.push({
         role: "user",
-        message: value.value
+        message: messageValue
     })
-    console.log(data)
     value.value=""
-    chatText.value.focus()
+    chatText.value.focus
+    const response = await $fetch("/api/joey/complete", {
+        method: "POST",
+        body: {
+            message: messageValue,
+            history: data
+        },
+        timeout: 120000
+    })
+    console.log(response)
+    data.push(response);
 }
 
 definePageMeta({
