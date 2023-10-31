@@ -20,6 +20,7 @@
     "vue-router": "^4.2.5"
   },
   "dependencies": {
+    "jose": "^5.0.1",
     "vue-contenteditable": "^4.1.0"
   }
 }

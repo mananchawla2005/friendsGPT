@@ -1,6 +1,4 @@
 import { serverSupabaseClient } from '#supabase/server'
-import * as jose from "jose";
-
 
 export default defineEventHandler(async (event)=>{
     const hanko = event.context.hanko;
@@ -14,18 +12,10 @@ export default defineEventHandler(async (event)=>{
     }
     const body = await readBody(event)
     const client = await serverSupabaseClient(event)
-    async function userId() {
-        const token = getCookie(event, 'hanko')
-        const payload = jose.decodeJwt(token ?? "")
-        return payload.sub
-    }
-    const userID = await userId()
-    const { data, error } = await client.from('Chats').insert({
+    const { error } = await client.from('Chats').update({
         name: body.name,
-        agent_name: body.agent_name,
-        user_id: userID
-    }).select()
+    }).eq('id', body.chat_id)
     console.log(error)
-    return data[0].id
+    return
     
 })

@@ -8,6 +8,11 @@ export default defineNuxtConfig({
   ],
   hanko: {
     apiURL: process.env.NUXT_PUBLIC_HANKO_API_URL,
+    redirects: {
+      success: "/chat",
+      login: "/",
+      followRedirect: false
+    }
   },
   app: {
     pageTransition: {

@@ -37,5 +37,8 @@ margin-right: auto;
 }
 hanko-auth {
     --background-color: rgb(241 245 249);
+    --brand-color: #000000;
+    --link-color: #3e3e3e;
+    --brand-color-shade-1: #6b6b6b;
 }
 </style>
